@@ -13,7 +13,6 @@ type Hoge = {
 export default function Test() {
   const [list, setList] = useState<Hoge[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [count, setCount] = useState<number>(0);
 
   async function* genPass(): AsyncGenerator<Hoge> {
     for (const i of [...Array(20)]) {
@@ -33,7 +32,6 @@ export default function Test() {
     const p = [];
     for await (const d of genPass()) {
       p.push(d);
-      setCount(p.length);
     }
     setList(p);
     setIsLoading(false);
@@ -57,7 +55,7 @@ export default function Test() {
           </Button>
         </div>
         <div class="col-span-12 shadow bg-gray-50 rounded-xl p-6">
-          <ViewTable count={count} isLoading={isLoading} data={list} />
+          <ViewTable isLoading={isLoading} data={list} />
         </div>
       </div>
     </>
@@ -67,7 +65,6 @@ export default function Test() {
 type ViewTableProps = {
   data: Hoge[];
   isLoading: boolean;
-  count: number;
 };
 
 function ViewTable(props: ViewTableProps) {
@@ -82,7 +79,6 @@ function ViewTable(props: ViewTableProps) {
         </thead>
         <tbody>
           <DataCell
-            count={props.count}
             isLoading={props.isLoading}
             value={props.data}
           />
@@ -95,21 +91,27 @@ function ViewTable(props: ViewTableProps) {
 type DataCellProps = {
   value: Hoge[];
   isLoading: boolean;
-  count: number;
 };
 function DataCell(props: DataCellProps): VNode | VNode[] {
-  const percentage = Math.floor(props.count / 20 * 100);
   if (props.value.length === 0 && !props.isLoading) {
     return (
       <tr class="border-b border-gray-200">
-        <td class="p-6" colSpan={2}>Empty Data...</td>
+        <td class="p-6" colSpan={2}>
+          Empty Data...
+        </td>
       </tr>
     );
   } else if (props.isLoading) {
     return (
       <tr class="border-b border-gray-200">
         <td class="p-6" colSpan={2}>
-          processing... {percentage}%
+          <div class="flex justify-center">
+            <div
+              class="animate-spin h-6 w-6 border-4 border-gray-500 rounded-full"
+              style={{ borderTopColor: "transparent" }}
+            >
+            </div>
+          </div>
         </td>
       </tr>
     );
