@@ -1,9 +1,8 @@
-import { useEffect, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 import { Button } from "../components/Button.tsx";
 import { cryptoRandomString } from "crypto_random_string";
-import { hash, hashSync } from "bcrypt";
+import { hash } from "bcrypt";
 import ky from "https://cdn.skypack.dev/ky?dts";
-import { delay } from "https://deno.land/std@0.160.0/async/delay.ts";
 
 type Hoge = {
   password: string;
@@ -16,10 +15,9 @@ export default function Test() {
   const [count, setCount] = useState<number>(0);
 
   async function* genPass(): AsyncGenerator<Hoge> {
-    for (const i of [...Array(20)]) {
+    for (const i of [...Array(10)]) {
       const s = cryptoRandomString({ length: 8, type: "alphanumeric" });
-      const h = hashSync(s);
-      await delay(0);
+      const h = await hash(s);
       yield {
         password: s,
         hash: h,
@@ -98,7 +96,7 @@ type DataCellProps = {
   count: number;
 };
 function DataCell(props: DataCellProps): VNode | VNode[] {
-  const percentage = Math.floor(props.count / 20 * 100);
+  const percentage = Math.floor(props.count / 10 * 100);
   if (props.value.length === 0 && !props.isLoading) {
     return (
       <tr class="border-b border-gray-200">
