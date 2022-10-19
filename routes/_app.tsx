@@ -3,7 +3,6 @@ import { Head } from "$fresh/runtime.ts";
 import { Header } from "../components/Header.tsx";
 
 export default function App({ Component }: AppProps) {
-  console.log(Component);
   return (
     <>
       <div class="h-screen bg-gray-200">
