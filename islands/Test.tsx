@@ -1,7 +1,7 @@
 import { useState } from "preact/hooks";
 import { Button } from "../components/Button.tsx";
 import { cryptoRandomString } from "crypto_random_string";
-import { hash } from "bcrypt";
+import { hashSync } from "bcrypt";
 import ky from "https://cdn.skypack.dev/ky?dts";
 
 type Hoge = {
@@ -12,12 +12,11 @@ type Hoge = {
 export default function Test() {
   const [list, setList] = useState<Hoge[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [count, setCount] = useState<number>(0);
 
-  async function* genPass(): AsyncGenerator<Hoge> {
+  function* genPass(): Generator<Hoge> {
     for (const i of [...Array(10)]) {
       const s = cryptoRandomString({ length: 8, type: "alphanumeric" });
-      const h = await hash(s);
+      const h = hashSync(s);
       yield {
         password: s,
         hash: h,
@@ -25,13 +24,12 @@ export default function Test() {
     }
   }
 
-  async function addList() {
+  function addList() {
     setIsLoading(true);
     setList([]);
     const p = [];
-    for await (const d of genPass()) {
+    for (const d of genPass()) {
       p.push(d);
-      setCount(p.length);
     }
     setList(p);
     setIsLoading(false);
@@ -55,7 +53,7 @@ export default function Test() {
           </Button>
         </div>
         <div class="col-span-12 shadow bg-gray-50 rounded-xl p-6">
-          <ViewTable count={count} isLoading={isLoading} data={list} />
+          <ViewTable isLoading={isLoading} data={list} />
         </div>
       </div>
     </>
@@ -65,7 +63,6 @@ export default function Test() {
 type ViewTableProps = {
   data: Hoge[];
   isLoading: boolean;
-  count: number;
 };
 
 function ViewTable(props: ViewTableProps) {
@@ -80,7 +77,6 @@ function ViewTable(props: ViewTableProps) {
         </thead>
         <tbody>
           <DataCell
-            count={props.count}
             isLoading={props.isLoading}
             value={props.data}
           />
@@ -91,12 +87,10 @@ function ViewTable(props: ViewTableProps) {
 }
 
 type DataCellProps = {
-  value: any[];
+  value: Hoge[];
   isLoading: boolean;
-  count: number;
 };
 function DataCell(props: DataCellProps): VNode | VNode[] {
-  const percentage = Math.floor(props.count / 10 * 100);
   if (props.value.length === 0 && !props.isLoading) {
     return (
       <tr class="border-b border-gray-200">
@@ -107,7 +101,7 @@ function DataCell(props: DataCellProps): VNode | VNode[] {
     return (
       <tr class="border-b border-gray-200">
         <td class="p-6" colSpan={2}>
-          processing... {percentage}%
+          processing...
         </td>
       </tr>
     );
