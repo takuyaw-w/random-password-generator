@@ -1,4 +1,4 @@
-import { asset, Head } from "$fresh/runtime.ts";
+import { Head } from "$fresh/runtime.ts";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { generatePassword } from "../utilis/bcrypto.ts";
 import { type GeneratedPasswd } from "../utilis/bcrypto.ts";
