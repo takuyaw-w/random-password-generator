@@ -1,4 +1,4 @@
-import { Head } from "$fresh/runtime.ts";
+import { asset, Head } from "$fresh/runtime.ts";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { generatePassword } from "../utilis/bcrypto.ts";
 import { type GeneratedPasswd } from "../utilis/bcrypto.ts";
@@ -39,6 +39,8 @@ export default function Home({ data }: PageProps<Data>) {
       <Head>
         <title>Random Password Generator</title>
       </Head>
+      <p>{asset("/static/ogp.png")}</p>
+      <p>{import.meta.url}</p>
       <form>
         <input type="hidden" min="1" max="100" name="q" value="10" />
         <Button type="submit">Generate!</Button>
