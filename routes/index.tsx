@@ -38,6 +38,16 @@ export default function Home({ data }: PageProps<Data>) {
     <>
       <Head>
         <title>Random Password Generator</title>
+        <meta property="og:title" content="Random Password Generator" />
+        <meta property="og:type" content="website" />
+        <meta property="og:description" content="Generate a random password." />
+        <meta property="og:url" content="https://random-passwd-gen.deno.dev/" />
+        <meta property="og:site_name" content="Random Password Generator" />
+        <meta
+          property="og:image"
+          content="https://random-passwd-gen.deno.dev/ogp.png"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <form>
         <input type="hidden" min="1" max="100" name="q" value="10" />
