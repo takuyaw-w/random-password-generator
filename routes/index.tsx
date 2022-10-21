@@ -43,7 +43,7 @@ export default function Home({ data }: PageProps<Data>) {
         <input type="hidden" min="1" max="100" name="q" value="10" />
         <Button type="submit">Generate!</Button>
       </form>
-      <div class="shadow bg-white rounded mt-6 overflow-x-auto p-6">
+      <div class="shadow bg-white rounded mt-6 p-6">
         <Table headers={header} rows={generatedPass} />
       </div>
     </>
