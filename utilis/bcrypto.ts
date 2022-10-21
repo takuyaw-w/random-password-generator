@@ -26,11 +26,11 @@ const hash: typeof hashPromise = (
   salt: string | undefined = undefined,
 ) => new Promise((res) => res(hashSync(plaintext, salt)));
 
-export async function generatePassword(
+export function generatePassword(
   quantity: number,
   options: GenerateOptions,
 ): Promise<GeneratedPasswd[]> {
-  return await Promise.all([...Array(quantity)].map(async () => {
+  return Promise.all([...Array(quantity)].map(async () => {
     const s = cryptoRandomString(options);
     const h = await hash(s);
     return {
