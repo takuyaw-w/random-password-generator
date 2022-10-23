@@ -1,6 +1,6 @@
 import { hash as hashPromise, hashSync } from "bcrypt";
 import { cryptoRandomString } from "crypto_random_string";
-import { delay } from "https://deno.land/std@0.160.0/async/delay.ts";
+import { delay } from "std/async/delay.ts";
 type GenerateOptions = {
   length: number;
   type?: CharacterType;

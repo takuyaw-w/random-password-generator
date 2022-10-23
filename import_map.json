@@ -8,6 +8,8 @@
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.0.1",
     "twind": "https://esm.sh/twind@0.16.17",
     "twind/": "https://esm.sh/twind@0.16.17/",
+    "std": "https://deno.land/std@0.160.0",
+    "std/": "https://deno.land/std@0.160.0/",
     "crypto_random_string": "https://deno.land/x/crypto_random_string@1.1.0/mod.ts",
     "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
     "ky": "https://cdn.skypack.dev/ky@0.31.4"
