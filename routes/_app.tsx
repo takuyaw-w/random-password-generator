@@ -19,7 +19,7 @@ export default function App({ Component }: AppProps) {
         />
         <meta name="twitter:card" content="summary" />
       </Head>
-      <div class="flex flex-col min-h-screen bg-gray-200 overflow-y-scroll">
+      <div class="flex flex-col min-h-screen bg-gray-200">
         <Header />
         <main class="my-6 mx-auto container flex-grow">
           <Component />

@@ -3,7 +3,11 @@ import { Select } from "../components/Select.tsx";
 import { Table } from "../components/Table.tsx";
 import { Input } from "../components/Input.tsx";
 import { useState } from "preact/hooks";
-import { generatePassword, type PasswordList } from "../utilis/bcrypto.ts";
+import {
+  type DigestType,
+  generatePassword,
+  type PasswordList,
+} from "../utilis/bcrypto.ts";
 
 const header = [
   {
@@ -36,6 +40,10 @@ const charTypes = [
 
 const hashTypes = [
   { optionName: "bcrypto", value: "bcrypto", selected: true },
+  { optionName: "SHA-1", value: "SHA-1", selected: false },
+  { optionName: "SHA-256", value: "SHA-256", selected: false },
+  { optionName: "SHA-384", value: "SHA-384", selected: false },
+  { optionName: "SHA-512", value: "SHA-512", selected: false },
 ];
 
 export default function GenPasswdLand() {
@@ -43,8 +51,8 @@ export default function GenPasswdLand() {
   const [length, setLength] = useState(8);
   const [passwordList, setPasswordList] = useState<PasswordList[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [characterType, setCharacterType] = useState("hex");
-  const [hasherType, setHasherType] = useState("bcrypto");
+  const [characterType, setCharacterType] = useState("alphanumeric");
+  const [hasherType, setHasherType] = useState<DigestType>("bcrypto");
 
   async function submitHandler(e: SubmitEvent) {
     e.preventDefault();
@@ -53,7 +61,7 @@ export default function GenPasswdLand() {
     setPasswordList([]);
     const l = [];
     for await (
-      const p of generatePassword(quantity, {
+      const p of generatePassword(quantity, hasherType, {
         length,
         type: characterType,
       })
