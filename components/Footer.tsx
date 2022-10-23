@@ -3,7 +3,7 @@ export function Footer() {
     <footer class="bg-white shadow p-4">
       <div class="container mx-auto">
         <span class="text-sm text-gray-500">
-          Author:
+          Author:&nbsp;
           <a
             href="http://github.com/takuyaw-w"
             class="hover:text-blue-800 hover:underline"

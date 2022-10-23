@@ -1,6 +1,6 @@
 import { hash as hashPromise, hashSync } from "bcrypt";
 import { cryptoRandomString } from "crypto_random_string";
-
+import { delay } from "https://deno.land/std@0.160.0/async/delay.ts";
 type GenerateOptions = {
   length: number;
   type?: CharacterType;
@@ -16,7 +16,7 @@ type CharacterType =
   | "ascii-printable"
   | "alphanumeric";
 
-export type GeneratedPasswd = {
+export type PasswordList = {
   password: string;
   hash: string;
 };
@@ -26,16 +26,17 @@ const hash: typeof hashPromise = (
   salt: string | undefined = undefined,
 ) => new Promise((res) => res(hashSync(plaintext, salt)));
 
-export function generatePassword(
+export async function* generatePassword(
   quantity: number,
   options: GenerateOptions,
-): Promise<GeneratedPasswd[]> {
-  return Promise.all([...Array(quantity)].map(async () => {
+): AsyncGenerator<PasswordList> {
+  for (let i = 0; i < quantity; i++) {
     const s = cryptoRandomString(options);
     const h = await hash(s);
-    return {
+    await delay(0);
+    yield {
       password: s,
       hash: h,
     };
-  }));
+  }
 }

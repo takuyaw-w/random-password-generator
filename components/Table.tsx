@@ -13,7 +13,7 @@ export function Table(props: Props) {
   const hasData = rows.length > 0;
   const numOfColumn = headers.length;
   return (
-    <div class="overflow-hidden rounded overflow-x-auto">
+    <div class="overflow-hidden shadow rounded overflow-x-auto">
       <table class="min-w-full">
         <thead class="bg-gray-800">
           <tr>
