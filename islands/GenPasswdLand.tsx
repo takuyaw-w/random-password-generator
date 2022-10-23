@@ -57,7 +57,6 @@ export default function GenPasswdLand() {
   async function submitHandler(e: SubmitEvent) {
     e.preventDefault();
     setIsProcessing((prevState) => !prevState);
-
     setPasswordList([]);
     const l = [];
     for await (
@@ -69,7 +68,6 @@ export default function GenPasswdLand() {
       l.push(p);
     }
     setPasswordList(l);
-
     setIsProcessing((prevState) => !prevState);
   }
 
@@ -93,6 +91,16 @@ export default function GenPasswdLand() {
     } else {
       setHasherType(e.target.value);
     }
+  }
+
+  function downloadCsv(): void {
+    fetch("/api/joke", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(passwordList),
+    });
   }
 
   return (
@@ -150,6 +158,16 @@ export default function GenPasswdLand() {
             <div class="col-span-2">
               <Button>Generate!</Button>
             </div>
+          </fieldset>
+        </form>
+        <form action="/api/joke" method="POST">
+          <fieldset disabled={passwordList.length <= 0}>
+            {passwordList.map((v) => (
+              <>
+                <input name="p" type="hidden" value={[v.password, v.hash]} />
+              </>
+            ))}
+            <Button>CSV Download</Button>
           </fieldset>
         </form>
       </div>

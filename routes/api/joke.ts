@@ -1,24 +1,27 @@
-import { HandlerContext } from "$fresh/server.ts";
+import { Handlers } from "$fresh/server.ts";
 
-// Jokes courtesy of https://punsandoneliners.com/randomness/programmer-jokes/
-const JOKES = [
-  "Why do Java developers often wear glasses? They can't C#.",
-  "A SQL query walks into a bar, goes up to two tables and says “can I join you?”",
-  "Wasn't hard to crack Forrest Gump's password. 1forrest1.",
-  "I love pressing the F5 key. It's refreshing.",
-  "Called IT support and a chap from Australia came to fix my network connection.  I asked “Do you come from a LAN down under?”",
-  "There are 10 types of people in the world. Those who understand binary and those who don't.",
-  "Why are assembly programmers often wet? They work below C level.",
-  "My favourite computer based band is the Black IPs.",
-  "What programme do you use to predict the music tastes of former US presidential candidates? An Al Gore Rhythm.",
-  "An SEO expert walked into a bar, pub, inn, tavern, hostelry, public house.",
-];
+export const handler: Handlers = {
+  async POST(req) {
+    const body = await req.formData();
+    const header = ["Password", "Hash"];
+    const h = Array.from(body.values()).map((v) => v.split(","));
+    const merge = [
+      header,
+      ...h,
+    ];
+    const d = merge.map((v) => {
+      const i = v.map((v) => {
+        return '"' + v + '"';
+      });
+      return i.join(",");
+    }).join("\r\n");
 
-export const handler = async (
-  _req: Request,
-  _ctx: HandlerContext,
-): Promise<Response> => {
-  console.log(await _req.json());
-  const body = JOKES[Math.floor(Math.random() * JOKES.length)];
-  return new Response(JSON.stringify({ body }));
+    return new Response(d, {
+      status: 200,
+      headers: {
+        "Content-Type": "text/csv; charset=UTF-8",
+        "Content-disposition": "attachment; filename=password_list.csv",
+      },
+    });
+  },
 };
