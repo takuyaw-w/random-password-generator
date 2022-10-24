@@ -54,8 +54,7 @@ export default function GenPasswdLand() {
   const [characterType, setCharacterType] = useState("alphanumeric");
   const [hasherType, setHasherType] = useState<DigestType>("bcrypto");
 
-  async function submitHandler(e: SubmitEvent) {
-    e.preventDefault();
+  async function submitHandler() {
     setIsProcessing((prevState) => !prevState);
     setPasswordList([]);
     const l = [];
@@ -93,83 +92,88 @@ export default function GenPasswdLand() {
     }
   }
 
-  function downloadCsv(): void {
-    fetch("/api/joke", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(passwordList),
-    });
+  function exportCsv(): void {
+    const header = ["Password", "Hash"];
+    const rows = passwordList.map((v) => [v.password, v.hash]);
+    const merge = [header, ...rows];
+    const data = merge.map((v) => {
+      const i = v.map((v) => {
+        return '"' + v + '"';
+      });
+      return i.join(",");
+    }).join("\r\n");
+    const blob = new Blob([data], { type: "application/octet-binary" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "sampleData.csv";
+    a.click();
+    a.remove();
   }
 
   return (
     <>
-      <div class="shadow bg-white rounded mt-6 p-6">
-        <form onSubmit={submitHandler}>
-          <fieldset class="grid grid-cols-2 gap-4" disabled={isProcessing}>
-            <div>
-              <Select
-                options={charTypes}
-                onChange={selectHandler}
-                name="charType"
-                id="c"
-              >
-                Password Type
-              </Select>
-            </div>
-            <div>
-              <Select
-                options={hashTypes}
-                onChange={selectHandler}
-                name="hashType"
-                id="h"
-              >
-                Hash Type
-              </Select>
-            </div>
-            <div>
-              <Input
-                type="number"
-                name="quantity"
-                value={quantity}
-                min="1"
-                max="100"
-                onInput={inputHandler}
-                id="q"
-              >
-                Quantity
-              </Input>
-            </div>
-            <div>
-              <Input
-                type="number"
-                name="length"
-                value={length}
-                min="8"
-                max="100"
-                step="2"
-                id="l"
-                onInput={inputHandler}
-              >
-                Password Length
-              </Input>
-            </div>
-            <div class="col-span-2">
-              <Button>Generate!</Button>
-            </div>
-          </fieldset>
-        </form>
-        <form action="/api/joke" method="POST">
-          <fieldset disabled={passwordList.length <= 0}>
-            {passwordList.map((v) => (
-              <>
-                <input name="p" type="hidden" value={[v.password, v.hash]} />
-              </>
-            ))}
-            <Button>CSV Download</Button>
-          </fieldset>
-        </form>
+      <div class="shadow bg-white rounded p-6">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <Select
+              options={charTypes}
+              onChange={selectHandler}
+              name="charType"
+              id="c"
+            >
+              Password Type
+            </Select>
+          </div>
+          <div>
+            <Select
+              options={hashTypes}
+              onChange={selectHandler}
+              name="hashType"
+              id="h"
+            >
+              Hash Type
+            </Select>
+          </div>
+          <div>
+            <Input
+              type="number"
+              name="quantity"
+              value={quantity}
+              min="1"
+              max="100"
+              onInput={inputHandler}
+              id="q"
+            >
+              Quantity
+            </Input>
+          </div>
+          <div>
+            <Input
+              type="number"
+              name="length"
+              value={length}
+              min="8"
+              max="100"
+              step="2"
+              id="l"
+              onInput={inputHandler}
+            >
+              Password Length
+            </Input>
+          </div>
+          <div>
+            <Button onClick={submitHandler}>Generate!</Button>
+          </div>
+          <div>
+            <Button
+              disabled={passwordList.length <= 0 || isProcessing}
+              onClick={exportCsv}
+            >
+              Export CSV
+            </Button>
+          </div>
+        </div>
       </div>
       <div class="shadow bg-white rounded mt-6 p-6">
         <Table headers={header} rows={passwordList} />
