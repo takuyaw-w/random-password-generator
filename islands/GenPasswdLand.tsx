@@ -106,7 +106,7 @@ export default function GenPasswdLand() {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "sampleData.csv";
+    a.download = "password_list.csv";
     a.click();
     a.remove();
   }
