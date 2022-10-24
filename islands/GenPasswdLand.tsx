@@ -114,14 +114,13 @@ export default function GenPasswdLand() {
   return (
     <>
       <div class="shadow bg-white rounded p-6">
-        <div class="grid grid-cols-2 gap-4">
+        <fieldset disabled={isProcessing} class="grid grid-cols-2 gap-4">
           <div>
             <Select
               options={charTypes}
               onChange={selectHandler}
               name="charType"
               id="c"
-              disabled={isProcessing}
             >
               Password Type
             </Select>
@@ -132,7 +131,6 @@ export default function GenPasswdLand() {
               onChange={selectHandler}
               name="hashType"
               id="h"
-              disabled={isProcessing}
             >
               Hash Type
             </Select>
@@ -146,7 +144,6 @@ export default function GenPasswdLand() {
               max="100"
               onInput={inputHandler}
               id="q"
-              disabled={isProcessing}
             >
               Quantity
             </Input>
@@ -161,25 +158,24 @@ export default function GenPasswdLand() {
               step="2"
               id="l"
               onInput={inputHandler}
-              disabled={isProcessing}
             >
               Password Length
             </Input>
           </div>
           <div>
-            <Button disabled={isProcessing} onClick={submitHandler}>
+            <Button onClick={submitHandler}>
               Generate!
             </Button>
           </div>
           <div>
             <Button
-              disabled={passwordList.length <= 0 || isProcessing}
+              disabled={passwordList.length <= 0}
               onClick={exportCsv}
             >
               Export CSV
             </Button>
           </div>
-        </div>
+        </fieldset>
       </div>
       <div class="shadow bg-white rounded mt-6 p-6">
         <Table headers={header} rows={passwordList} />
