@@ -121,6 +121,7 @@ export default function GenPasswdLand() {
               onChange={selectHandler}
               name="charType"
               id="c"
+              disabled={isProcessing}
             >
               Password Type
             </Select>
@@ -131,6 +132,7 @@ export default function GenPasswdLand() {
               onChange={selectHandler}
               name="hashType"
               id="h"
+              disabled={isProcessing}
             >
               Hash Type
             </Select>
@@ -144,6 +146,7 @@ export default function GenPasswdLand() {
               max="100"
               onInput={inputHandler}
               id="q"
+              disabled={isProcessing}
             >
               Quantity
             </Input>
@@ -158,12 +161,15 @@ export default function GenPasswdLand() {
               step="2"
               id="l"
               onInput={inputHandler}
+              disabled={isProcessing}
             >
               Password Length
             </Input>
           </div>
           <div>
-            <Button onClick={submitHandler}>Generate!</Button>
+            <Button disabled={isProcessing} onClick={submitHandler}>
+              Generate!
+            </Button>
           </div>
           <div>
             <Button
