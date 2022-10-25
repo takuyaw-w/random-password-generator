@@ -121,9 +121,8 @@ export default function GenPasswdLand() {
               onChange={selectHandler}
               name="charType"
               id="c"
-            >
-              Password Type
-            </Select>
+              label="Password Type"
+            />
           </div>
           <div>
             <Select
@@ -131,22 +130,8 @@ export default function GenPasswdLand() {
               onChange={selectHandler}
               name="hashType"
               id="h"
-            >
-              Hash Type
-            </Select>
-          </div>
-          <div>
-            <Input
-              type="number"
-              name="quantity"
-              value={quantity}
-              min="1"
-              max="100"
-              onInput={inputHandler}
-              id="q"
-            >
-              Quantity
-            </Input>
+              label="Hash Type"
+            />
           </div>
           <div>
             <Input
@@ -158,9 +143,20 @@ export default function GenPasswdLand() {
               step="2"
               id="l"
               onInput={inputHandler}
-            >
-              Password Length
-            </Input>
+              label="Password Length"
+            />
+          </div>
+          <div>
+            <Input
+              type="number"
+              name="quantity"
+              value={quantity}
+              min="1"
+              max="100"
+              onInput={inputHandler}
+              id="q"
+              label="Quantity"
+            />
           </div>
           <div>
             <Button onClick={submitHandler}>

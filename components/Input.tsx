@@ -1,10 +1,11 @@
 import { JSX } from "preact";
 
-export function Input(props: JSX.HTMLAttributes<HTMLInputElement>) {
+export function Input(_props: JSX.HTMLAttributes<HTMLInputElement>) {
+  const { label, ...props } = _props;
   return (
     <>
       <label class="block text-sm text-gray-600" for={props.id}>
-        {props.children}
+        {label}
       </label>
       <input
         {...props}
